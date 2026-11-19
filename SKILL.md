@@ -26,7 +26,7 @@ AI 生成的界面不像「AI 画的」，它像**没做完的**。原因不是�
 1. **定义**：一句话写清「给谁用、解决什么问题、要给人什么感觉」。说不清就先问用户，这一步不要出设计。
 2. **契约**：把下面 5 行填完，贴在生成请求最前面。没定的数值就等于交给 AI 随手编。
 3. **生成**：先出完整一版，不要边想边补局部。
-4. **审计**：`node scripts/slop-lint.mjs <目标目录> --json`。
+4. **审计**：`node <skill 目录>/scripts/slop-lint.mjs <目标目录> --json`。
 5. **修**：按 P0 → P1 → P2 顺序，**每轮只改一类**，改完复跑。分数不再上升就停。
 
 ## 生成前：5 行契约
@@ -59,8 +59,9 @@ AI 生成的界面不像「AI 画的」，它像**没做完的**。原因不是�
 ## 生成后：审计与修复
 
 ```bash
-node scripts/slop-lint.mjs src --json          # 机器可读
-node scripts/slop-lint.mjs src --min-severity P1   # 只看要命的
+# 脚本随 skill 一起安装，路径指向你放 skill 的位置（示例为 Claude Code 的个人目录）
+node ~/.claude/skills/de-ai-ui/scripts/slop-lint.mjs src --json          # 机器可读
+node ~/.claude/skills/de-ai-ui/scripts/slop-lint.mjs src --min-severity P1   # 只看要命的
 ```
 
 检查器给 0–100 的 craft score（100 = 无违规）。修复顺序：
@@ -135,7 +136,7 @@ node scripts/slop-lint.mjs src --min-severity P1   # 只看要命的
 8. 动效收敛：必须时 ease-out、约 250ms，不要 transition: all。
 9. 图标整套同一体系，不要混用两个图标库。
 
-完成后输出 element: old -> new 的变更清单，以及你用 node scripts/slop-lint.mjs 复跑后的分数。
+完成后输出 element: old -> new 的变更清单，以及你用 slop-lint 复跑后的分数。
 ```
 
 ## 参考文件
