@@ -1,0 +1,69 @@
+/* de-ai-ui 最小 token 起点
+ * 复制到项目里，先替换成你自己的品牌值，再写界面。
+ * 原则：所有数值从集合里选，不允许出现集合外的临时值。
+ */
+
+:root {
+  /* ---- 色彩：chrome 只有黑白灰 ---- */
+  --bg: #f7f5f1;
+  --surface: #fffefa;
+  --surface-raised: #ffffff;
+  --line: rgba(0, 0, 0, 0.14);
+  --line-strong: rgba(0, 0, 0, 0.24);
+  --ink: #1b1b1d;
+  --muted: #6f6d68;
+
+  /* 品牌色：最多 1 个，只用于主按钮 / 当前选中态 */
+  --accent: #1b1b1d;
+  --accent-ink: #fffefa;
+
+  /* ---- 字号：最多 4 档，最小 12px ---- */
+  --text-meta: 12px;
+  --text-body: 14px;
+  --text-lead: 20px;
+  --text-display: 40px;
+
+  /* ---- 间距：4px 网格 ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+
+  /* ---- 圆角：同心递减，最小 4px ---- */
+  --radius-control: 8px; /* surface 16 − padding 8 */
+  --radius-surface: 16px;
+  --radius-pill: 999px;
+
+  /* ---- 描边：统一 0.5px ---- */
+  --hairline: 0.5px;
+
+  /* ---- 动效 ---- */
+  --ease: cubic-bezier(0.2, 0, 0, 1); /* ≈ ease-out */
+  --dur-press: 100ms;
+  --dur-state: 160ms;
+  --dur-panel: 220ms;
+
+  /* ---- 字体：先西后中，generic 兜底 ---- */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", "PingFang SC", "Noto Sans CJK SC", "Source Han Sans CN", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+
+/* 低分屏上 0.5px 会消失，显式回退 */
+@media (max-resolution: 1.49dppx) {
+  :root {
+    --hairline: 1px;
+  }
+}
+
+/* 连续圆角：渐进增强，不支持的浏览器退回普通圆角 */
+@supports (corner-shape: superellipse(1.25)) {
+  :where(.radius-surface) {
+    corner-shape: superellipse(1.25);
+  }
+  :where(.radius-pill) {
+    corner-shape: round;
+  }
+}

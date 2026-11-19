@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>拾光：把一趟旅行收成一条时间线</title>
+<style>
+  :root {
+    --paper: #f7f5f1;
+    --surface: #fffefa;
+    --ink: #1b1b1d;
+    --muted: #6f6d68;
+    --line: rgba(0, 0, 0, 0.14);
+
+    --text-meta: 12px;
+    --text-body: 14px;
+    --text-lead: 20px;
+    --text-display: 40px;
+
+    --radius-control: 8px;
+    --radius-surface: 16px;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 16px;
+    --space-4: 24px;
+    --space-5: 40px;
+    --space-6: 64px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", "PingFang SC", "Noto Sans CJK SC", "Source Han Sans CN", sans-serif;
+    font-size: var(--text-body);
+    line-height: 1.7;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 var(--space-4); }
+
+  .site {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: var(--space-4) 0;
+    border-bottom: 0.5px solid var(--line);
+  }
+  .brand { font-weight: 600; letter-spacing: 0.02em; }
+  .site nav a {
+    color: var(--muted);
+    text-decoration: none;
+    margin-left: var(--space-4);
+    transition: color 160ms ease-out;
+  }
+  .site nav a:hover { color: var(--ink); }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: var(--space-6);
+    align-items: end;
+    padding: var(--space-6) 0 var(--space-5);
+  }
+  .hero h1 {
+    font-size: min(9vw, var(--text-display));
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+    margin: 0 0 var(--space-3);
+  }
+  .lede { color: var(--muted); margin: 0 0 var(--space-4); max-width: 34em; }
+
+  .actions { display: flex; align-items: center; gap: var(--space-4); }
+  .button {
+    display: inline-block;
+    padding: 10px var(--space-4);
+    border-radius: var(--radius-control);
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: none;
+    transition: transform 100ms ease-out, background-color 160ms ease-out;
+  }
+  .button:active { transform: scale(0.97); }
+  .link {
+    color: var(--muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 0.5px;
+    transition: color 160ms ease-out;
+  }
+  .link:hover { color: var(--ink); }
+
+  .meta { color: var(--muted); font-size: var(--text-meta); }
+  .meta time { font-variant-numeric: tabular-nums; }
+
+  .timeline { padding: var(--space-5) 0; border-top: 0.5px solid var(--line); }
+  .timeline h2 { font-size: var(--text-lead); font-weight: 600; margin: 0 0 var(--space-3); }
+  .timeline ol { list-style: none; margin: 0; padding: 0; }
+  .timeline li {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    border-top: 0.5px solid var(--line);
+  }
+  .timeline li:first-child { border-top: 0; }
+  .timeline strong { font-weight: 600; }
+  .timeline p { margin: var(--space-1) 0 0; color: var(--muted); }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+    padding: var(--space-5) 0;
+    border-top: 0.5px solid var(--line);
+  }
+  .features h3 { margin: 0 0 var(--space-2); font-size: var(--text-body); font-weight: 600; }
+  .features p { margin: 0; color: var(--muted); }
+
+  .pricing { padding: var(--space-5) 0; border-top: 0.5px solid var(--line); }
+  .pricing h2 { font-size: var(--text-lead); font-weight: 600; margin: 0 0 var(--space-4); }
+  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+  .tier {
+    background: var(--surface);
+    border: 0.5px solid var(--line);
+    border-radius: var(--radius-surface);
+    padding: var(--space-4);
+  }
+  .tier--lead { background: var(--ink); color: var(--paper); border-color: transparent; }
+  .tier--lead .price-note { color: rgba(255, 255, 255, 0.66); }
+  .tier h3 { margin: 0; font-weight: 600; }
+  .price-note { color: var(--muted); margin: var(--space-2) 0 0; }
+  .amount { font-size: var(--text-lead); font-variant-numeric: tabular-nums; }
+
+  blockquote {
+    margin: var(--space-6) 0;
+    padding-top: var(--space-4);
+    border-top: 0.5px solid var(--line);
+  }
+  blockquote p { font-size: var(--text-lead); line-height: 1.5; margin: 0 0 var(--space-2); }
+  blockquote footer { color: var(--muted); font-size: var(--text-meta); }
+
+  .site-footer {
+    padding: var(--space-5) 0 var(--space-6);
+    border-top: 0.5px solid var(--line);
+    color: var(--muted);
+    font-size: var(--text-meta);
+  }
+
+  @supports (corner-shape: superellipse(1.25)) {
+    :where(.tier, .button) { corner-shape: superellipse(1.25); }
+    :where(.avatar) { corner-shape: round; }
+  }
+
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; gap: var(--space-5); }
+    .features, .tiers { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <span class="brand">拾光</span>
+      <nav>
+        <a href="#">记录</a>
+        <a href="#">时间线</a>
+        <a href="#">定价</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <h1>把一趟旅行，收成一条时间线</h1>
+          <p class="lede">散在相册里的照片，按时间和地点排好顺序。不用整理，打开就能翻。</p>
+          <div class="actions">
+            <a class="button" href="#">开始记录</a>
+            <a class="link" href="#">看看示例</a>
+          </div>
+        </div>
+        <p class="meta">
+          上一趟：东京，四天<br>
+          最近更新 <time datetime="2026-10-28">10 月 28 日 23:12</time>
+        </p>
+      </section>
+
+      <section class="timeline">
+        <h2>神保町，入夜之后</h2>
+        <ol>
+          <li>
+            <span class="meta"><time datetime="2026-10-26T18:40">18:40</time></span>
+            <div>
+              <strong>旧书店街</strong>
+              <p>路灯一盏一盏亮起来，招牌的蓝色比白天更沉。</p>
+            </div>
+          </li>
+          <li>
+            <span class="meta"><time datetime="2026-10-26T19:25">19:25</time></span>
+            <div>
+              <strong>咖喱店</strong>
+              <p>排队二十分钟，店里只有八个座位。</p>
+            </div>
+          </li>
+          <li>
+            <span class="meta"><time datetime="2026-10-26T21:10">21:10</time></span>
+            <div>
+              <strong>回程</strong>
+              <p>地铁上把当天的 37 张照片收进这一条线里。</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="features">
+        <div>
+          <h3>自动成线</h3>
+          <p>照片落地就排好顺序，不需要手动整理。</p>
+        </div>
+        <div>
+          <h3>地点复原</h3>
+          <p>还原拍摄地点，补全缺失的坐标。</p>
+        </div>
+        <div>
+          <h3>离线可用</h3>
+          <p>飞机上也能翻，数据留在本地。</p>
+        </div>
+      </section>
+
+      <section class="pricing">
+        <h2>定价</h2>
+        <div class="tiers">
+          <div class="tier">
+            <h3>免费</h3>
+            <p class="price-note"><span class="amount">0 元</span>，每月 100 张</p>
+          </div>
+          <div class="tier tier--lead">
+            <h3>单人版</h3>
+            <p class="price-note"><span class="amount">18 元</span>每月，照片不限量</p>
+          </div>
+          <div class="tier">
+            <h3>家庭版</h3>
+            <p class="price-note"><span class="amount">38 元</span>每月，六位成员共享</p>
+          </div>
+        </div>
+      </section>
+
+      <blockquote>
+        <p>用完第一天，我把三年的照片都翻了一遍。像把过去重新看了一次。</p>
+        <footer>阿茶，写在豆瓣</footer>
+      </blockquote>
+    </main>
+
+    <footer class="site-footer">拾光，二〇二六年</footer>
+  </div>
+</body>
+</html>
