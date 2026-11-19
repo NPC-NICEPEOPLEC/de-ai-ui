@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>拾光：把旅行整理成一本日记</title>
-  <meta name="description" content="拾光按拍摄时间和地点整理旅行照片，每天补一句话，旅行结束就有完整日记。">
+  <meta name="description" content="拾光按时间和地点整理照片，每天补一句话，旅行结束日记就排好了。">
   <!--
     5 行契约
     受众与唯一目标：一年出行数次的旅行者，这个页面只让他们开始写第一本旅行日记。
@@ -36,21 +36,21 @@
     .btn.ghost:hover{ background:rgba(25,24,20,.04) }
     .nav{ padding:var(--sp-4) 0 }
     .nav .wrap{ display:flex; align-items:center; justify-content:space-between; gap:var(--sp-4) }
-    .brand{ display:inline-flex; align-items:center; gap:var(--sp-2); font-weight:600; letter-spacing:.06em }
+    .brand{ display:inline-flex; align-items:center; min-height:44px; gap:var(--sp-2); font-weight:600; letter-spacing:.06em }
     .brand i{ width:8px; height:8px; border-radius:50%; background:var(--accent) }
     .nav nav{ display:flex; gap:var(--sp-6); color:var(--muted) }
     .nav nav a{ display:inline-flex; align-items:center; min-height:44px; transition:color 150ms ease-out }
     .nav nav a:hover{ color:var(--ink) }
     .hero{ padding:var(--sp-12) 0 var(--sp-20) }
     .hero .wrap{ display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:var(--sp-16); align-items:center }
-    .hero-sub{ margin-top:var(--sp-6); max-width:26em; color:var(--muted) }
+    .hero-sub{ margin-top:var(--sp-6); max-width:20.5em; color:var(--muted) }
     .actions{ margin-top:var(--sp-8) }
     .preview{ padding:var(--sp-2); border:var(--hairline) solid var(--line); border-radius:var(--r-card); background:var(--surface) }
     .page{ overflow:hidden; border-radius:var(--r-inner); background:#fff }
     .shot{ position:relative; aspect-ratio:4/3; overflow:hidden; background:linear-gradient(180deg, #f2eee5, #eae6de) }
     .sun{ position:absolute; top:var(--sp-6); right:var(--sp-8); width:64px; height:64px; border-radius:50%; background:#ded6c9 }
     .ridge{ position:absolute; left:0; right:0; bottom:0; height:58%; background:#c8c0b2; clip-path:polygon(0 100%, 0 64%, 26% 30%, 48% 58%, 70% 22%, 100% 66%, 100% 100%) }
-    .ridge.front{ height:42%; background:#a9a094; clip-path:polygon(0 100%, 0 72%, 22% 48%, 44% 76%, 66% 52%, 100% 84%, 100% 100%) }
+    .ridge.front{ height:42%; background:#948b7e; clip-path:polygon(0 100%, 0 72%, 22% 48%, 44% 76%, 66% 52%, 100% 84%, 100% 100%) }
     .page-copy{ padding:var(--sp-6) }
     .page-copy h3{ margin-top:var(--sp-1) }
     .page-copy .caption{ margin-top:var(--sp-2) }
@@ -65,7 +65,6 @@
     .tier{ display:flex; flex-direction:column; padding:var(--sp-6); border:var(--hairline) solid var(--line); border-radius:var(--r-card); background:var(--surface) }
     .tier.best{ border-color:var(--ink) }
     .tier-head{ display:flex; align-items:center; justify-content:space-between; gap:var(--sp-3); min-height:24px }
-    .tier-name{ font-weight:600 }
     .tag{ display:inline-flex; align-items:center; gap:var(--sp-1); padding:var(--sp-1) var(--sp-2); border:var(--hairline) solid var(--line); border-radius:999px; font-size:var(--fs-caption); color:var(--muted) }
     .tag i{ width:4px; height:4px; border-radius:50%; background:var(--accent) }
     .price{ margin-top:var(--sp-3); font-size:var(--fs-heading); line-height:1.2; font-weight:600; font-variant-numeric:tabular-nums }
@@ -76,13 +75,15 @@
     .tier li::before{ content:""; position:absolute; left:0; top:.7em; width:4px; height:4px; border-radius:50%; background:var(--muted); opacity:.55 }
     .tier .btn{ margin-top:auto; width:100% }
     .quote{ padding:var(--sp-20) 0; background:#171613; color:var(--paper) }
-    .quote blockquote{ max-width:24em; font-size:var(--fs-heading); line-height:1.5; font-weight:500; letter-spacing:-.01em }
+    .quote blockquote{ max-width:25em; font-size:var(--fs-heading); line-height:1.5; font-weight:500; letter-spacing:-.01em }
     .quote figcaption{ margin-top:var(--sp-6); font-size:var(--fs-caption); color:rgba(244,241,234,.62) }
     .foot{ padding:var(--sp-12) 0; font-size:var(--fs-caption); color:var(--muted) }
     .foot .wrap{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:var(--sp-4) }
     .foot nav{ display:flex; gap:var(--sp-6) }
     .foot nav a{ display:inline-flex; align-items:center; min-height:44px }
-    @media (max-width:1100px){ .hero .wrap{ grid-template-columns:minmax(0,1fr); gap:var(--sp-12) } .preview{ max-width:540px } .grid3{ grid-template-columns:minmax(0,1fr) } .nav nav{ display:none } }
+    @media (max-width:1100px){ .hero .wrap{ grid-template-columns:minmax(0,1fr); gap:var(--sp-12) } .preview{ max-width:540px; margin:0 auto } }
+    @media (max-width:900px){ .grid3{ grid-template-columns:minmax(0,1fr) } }
+    @media (max-width:700px){ .nav nav{ display:none } }
     @media (max-width:640px){ :root{ --fs-hero:2rem; --fs-heading:1.5rem } .hero{ padding:var(--sp-8) 0 var(--sp-12) } .section,.quote{ padding:var(--sp-12) 0 } .quote blockquote{ max-width:none } }
     @media (prefers-reduced-motion:reduce){ *,*::before,*::after{ transition-duration:.01ms !important; animation-duration:.01ms !important } }
   </style>
@@ -104,7 +105,7 @@
       <div class="wrap">
         <div>
           <h1 id="hero-title">旅行，该有一本日记</h1>
-          <p class="hero-sub">拾光按拍摄时间和地点整理照片，你每天补一句话，旅行结束时日记已经排好。</p>
+          <p class="hero-sub">拾光按时间和地点整理照片，每天补一句话，旅行结束日记就排好了。</p>
           <div class="actions"><a class="btn" href="#pricing">免费开始</a></div>
         </div>
         <div class="preview" aria-hidden="true">
@@ -124,9 +125,9 @@
       <div class="wrap">
         <h2 id="features-title">整理照片这件事，交给拾光</h2>
         <div class="grid3">
-          <article class="feature"><h3>自动排版</h3><p>照片按拍摄时间和地点落位，跨天自动分节，不用挑模板。</p></article>
-          <article class="feature"><h3>一句话就够</h3><p>没词的时候补一句当天的心情也算数，日期和地点已经填好。</p></article>
-          <article class="feature"><h3>找回那一天</h3><p>输入「拉面」，就能翻到去年在福冈吃的那一碗。</p></article>
+          <article class="feature"><h3>自动排版</h3><p>照片按时间和地点排好，按天分节。</p></article>
+          <article class="feature"><h3>一句话就够</h3><p>没词时补一句，日期地点已填好。</p></article>
+          <article class="feature"><h3>找回那一天</h3><p>输入「拉面」，翻到福冈那一碗。</p></article>
         </div>
       </div>
     </section>
@@ -135,19 +136,19 @@
         <h2 id="pricing-title">按出行频率选</h2>
         <div class="grid3">
           <article class="tier">
-            <div class="tier-head"><p class="tier-name">轻装</p></div>
+            <div class="tier-head"><h3>轻装</h3></div>
             <p class="price">¥0</p><p class="caption">一年出门一两次</p>
             <ul><li>每月 2 本日记</li><li>时间线自动排版</li><li>导出长图</li></ul>
             <a class="btn ghost" href="#pricing">开始使用</a>
           </article>
           <article class="tier best">
-            <div class="tier-head"><p class="tier-name">旅人</p><p class="tag"><i></i>推荐</p></div>
+            <div class="tier-head"><h3>旅人</h3><p class="tag"><i></i>推荐</p></div>
             <p class="price">¥18<span>每月</span></p><p class="caption">一年出门三五次</p>
             <ul><li>不限日记本数</li><li>原图无损保存</li><li>地图路线回放</li><li>导出 PDF 与印刷文件</li></ul>
             <a class="btn" href="#pricing">开始使用</a>
           </article>
           <article class="tier">
-            <div class="tier-head"><p class="tier-name">常驻</p></div>
+            <div class="tier-head"><h3>常驻</h3></div>
             <p class="price">¥128<span>每年</span></p><p class="caption">全年都在路上</p>
             <ul><li>旅人套餐的全部</li><li>每年一本印刷装订</li><li>与同行的人共同编辑</li></ul>
             <a class="btn ghost" href="#pricing">联系我们</a>
@@ -165,7 +166,7 @@
   <footer class="foot">
     <div class="wrap">
       <p>© 2026 拾光</p>
-      <nav aria-label="页脚导航"><a href="#features">使用条款</a><a href="#pricing">隐私</a><a href="#quote">联系我们</a></nav>
+      <nav aria-label="页脚导航"><a href="#">使用条款</a><a href="#">隐私</a><a href="#">联系我们</a></nav>
     </div>
   </footer>
 </body>
