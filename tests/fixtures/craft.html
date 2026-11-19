@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  :root {
+    --radius-panel: 16px;
+    --radius-control: 8px;
+    --text-body: 14px;
+    --text-heading: 20px;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Noto Sans CJK SC", sans-serif;
+    text-align: left;
+    color: #1c1c1e;
+    background: #f6f4f0;
+  }
+  .panel {
+    border-radius: var(--radius-panel);
+    border: 0.5px solid rgba(0, 0, 0, 0.12);
+    padding: 16px;
+  }
+  .panel__row {
+    border-radius: var(--radius-control);
+    border: 0.5px solid rgba(0, 0, 0, 0.12);
+    font-size: var(--text-body);
+  }
+  .panel__title { font-size: var(--text-heading); }
+  @supports (corner-shape: superellipse(1.25)) {
+    :where(.panel, .panel__row) { corner-shape: superellipse(1.25); }
+  }
+  .pill { border-radius: 999px; }
+  .cta {
+    border-radius: var(--radius-control);
+    background: #1c1c1e;
+    color: #ffffff;
+    transition: background-color 180ms ease-out;
+  }
+  figure img { border-radius: var(--radius-panel); display: block; }
+</style>
+</head>
+<body>
+  <main class="panel">
+    <h1 class="panel__title">东京，入夜之后</h1>
+    <p>沿着神保町的旧书店街走，路灯一盏一盏亮起来。</p>
+    <div class="panel__row">第一天 神保町 18:40</div>
+    <button class="cta">开始记录</button>
+  </main>
+  <figure>
+    <img src="tokyo.jpg" alt="夜里神保町旧书店街的招牌与路灯">
+  </figure>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  :root {
+    --purple: #8b5cf6;
+    --indigo: #6366f1;
+  }
+  body {
+    font-family: "Instrument Serif", "PingFang SC", Georgia, sans-serif;
+    text-align: center;
+  }
+  .zh { font-family: "PingFang SC", "Helvetica Neue", sans-serif; }
+  .no-fallback { font-family: "Microsoft YaHei", Arial; }
+  .hero h1 { font-size: 96px; }
+  .hero p { font-size: 11px; color: #9ca3af; }
+  .eyebrow { text-transform: uppercase; font-size: 11px; letter-spacing: 0.2em; }
+  .cta {
+    background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.6s ease-in;
+    text-align: center;
+  }
+  .card {
+    border-radius: 13px;
+    border-left: 4px solid #10b981;
+    box-shadow: 0 1px 2px rgba(0,0,0,.1), 0 8px 24px rgba(0,0,0,.12);
+    text-align: center;
+  }
+  .card .card { border-radius: 3px; text-align: center; }
+  .card h3 { font-size: 21px; color: #8b5cf6; }
+  .tag { font-size: 10px; border-radius: 7px; }
+  .badge { font-size: 15px; border-radius: 10px; }
+  .muted { text-align: center; }
+</style>
+</head>
+<body>
+  <section class="hero">
+    <span class="eyebrow">AI-Powered · Next Gen</span>
+    <h1>Build faster · ship happier · grow forever 🚀</h1>
+    <p>我们让效率提升 · 让协作更简单 · 让团队更强大</p>
+    <button class="cta">免费开始 🎉</button>
+  </section>
+  <div class="card">
+    <div class="card">
+      <h3>10,000+ 满意客户</h3>
+      <p>这是一个解释性的描述文字，用来帮助用户理解上面那个数字到底意味着什么。</p>
+      <span class="tag">NEW</span>
+    </div>
+  </div>
+  <img src="hero.png" style="width: 640px">
+  <script type="module">
+    import { Rocket } from 'lucide-react';
+    import { Star } from 'heroicons';
+  </script>
+</body>
+</html>
