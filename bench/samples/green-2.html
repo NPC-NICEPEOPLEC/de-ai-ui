@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>拾光：把旅行整理成一本日记</title>
+  <meta name="description" content="拾光按拍摄时间和地点整理旅行照片，每天补一句话，旅行结束就有完整日记。">
+  <!--
+    5 行契约
+    受众与唯一目标：一年出行数次的旅行者，这个页面只让他们开始写第一本旅行日记。
+    界面色彩：chrome 只有暖纸色与黑白灰，陶土色只出现在品牌标记和推荐套餐的标记点。
+    字号档位：12 / 16 / 28 / 48，窄屏按 rem 等比缩小，不新增档位。
+    圆角档位：20 / 12 / 8 与 pill，4px 网格，嵌套 r = R − p（20 − 8 = 12）。
+    描边：0.5px hairline，1x 屏回退 1px，全站同粗；字体栈先西后中，sans-serif 兜底。
+  -->
+  <style>
+    :root{ --paper:#f4f1ea; --surface:#fbfaf6; --ink:#191814; --muted:#5f5c55; --line:rgba(25,24,20,.14); --accent:#a3492b; --hairline:0.5px;
+      --r-card:20px; --r-inner:12px; --r-control:8px; --fs-caption:12px; --fs-body:16px; --fs-heading:28px; --fs-hero:48px;
+      --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-6:24px; --sp-8:32px; --sp-12:48px; --sp-16:64px; --sp-20:80px; }
+    @media (max-resolution:1.49dppx){ :root{ --hairline:1px } }
+    *{ box-sizing:border-box }
+    body{ margin:0; background:var(--paper); color:var(--ink); font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size:var(--fs-body); line-height:1.65; -webkit-font-smoothing:antialiased }
+    a{ color:inherit; text-decoration:none }
+    h1,h2,h3,p,ul,figure,blockquote{ margin:0 }
+    ul{ padding:0; list-style:none }
+    :focus-visible{ outline:2px solid var(--ink); outline-offset:3px }
+    .wrap{ max-width:1120px; margin:0 auto; padding:0 var(--sp-6) }
+    h1{ font-size:var(--fs-hero); line-height:1.14; letter-spacing:-.02em; font-weight:600 }
+    h2{ font-size:var(--fs-heading); line-height:1.3; letter-spacing:-.01em; font-weight:600 }
+    h3{ font-size:var(--fs-body); line-height:1.5; font-weight:600 }
+    .caption{ font-size:var(--fs-caption); line-height:1.6; color:var(--muted) }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 var(--sp-6); border:var(--hairline) solid transparent; border-radius:var(--r-control); background:var(--ink); color:var(--paper); font-size:var(--fs-body); font-weight:500; transition:background-color 150ms ease-out, transform 100ms ease-out }
+    .btn:hover{ background:#2b2822 }
+    .btn:active{ transform:scale(.97) }
+    .btn.ghost{ background:transparent; border-color:var(--line); color:var(--ink) }
+    .btn.ghost:hover{ background:rgba(25,24,20,.04) }
+    .nav{ padding:var(--sp-4) 0 }
+    .nav .wrap{ display:flex; align-items:center; justify-content:space-between; gap:var(--sp-4) }
+    .brand{ display:inline-flex; align-items:center; gap:var(--sp-2); font-weight:600; letter-spacing:.06em }
+    .brand i{ width:8px; height:8px; border-radius:50%; background:var(--accent) }
+    .nav nav{ display:flex; gap:var(--sp-6); color:var(--muted) }
+    .nav nav a{ display:inline-flex; align-items:center; min-height:44px; transition:color 150ms ease-out }
+    .nav nav a:hover{ color:var(--ink) }
+    .hero{ padding:var(--sp-12) 0 var(--sp-20) }
+    .hero .wrap{ display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:var(--sp-16); align-items:center }
+    .hero-sub{ margin-top:var(--sp-6); max-width:26em; color:var(--muted) }
+    .actions{ margin-top:var(--sp-8) }
+    .preview{ padding:var(--sp-2); border:var(--hairline) solid var(--line); border-radius:var(--r-card); background:var(--surface) }
+    .page{ overflow:hidden; border-radius:var(--r-inner); background:#fff }
+    .shot{ position:relative; aspect-ratio:4/3; overflow:hidden; background:linear-gradient(180deg, #f2eee5, #eae6de) }
+    .sun{ position:absolute; top:var(--sp-6); right:var(--sp-8); width:64px; height:64px; border-radius:50%; background:#ded6c9 }
+    .ridge{ position:absolute; left:0; right:0; bottom:0; height:58%; background:#c8c0b2; clip-path:polygon(0 100%, 0 64%, 26% 30%, 48% 58%, 70% 22%, 100% 66%, 100% 100%) }
+    .ridge.front{ height:42%; background:#a9a094; clip-path:polygon(0 100%, 0 72%, 22% 48%, 44% 76%, 66% 52%, 100% 84%, 100% 100%) }
+    .page-copy{ padding:var(--sp-6) }
+    .page-copy h3{ margin-top:var(--sp-1) }
+    .page-copy .caption{ margin-top:var(--sp-2) }
+    .strip{ display:flex; gap:var(--sp-2); margin-top:var(--sp-4) }
+    .strip i{ width:48px; height:48px; border-radius:var(--r-control); background:#c8c0b2 }
+    .strip i:nth-child(2){ background:#a9a094 }
+    .strip i:nth-child(3){ background:#eae6de }
+    .section{ padding:var(--sp-16) 0 }
+    .grid3{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--sp-4); margin-top:var(--sp-8) }
+    .feature{ padding:var(--sp-6); border:var(--hairline) solid var(--line); border-radius:var(--r-card); background:var(--surface) }
+    .feature p{ margin-top:var(--sp-2); color:var(--muted) }
+    .tier{ display:flex; flex-direction:column; padding:var(--sp-6); border:var(--hairline) solid var(--line); border-radius:var(--r-card); background:var(--surface) }
+    .tier.best{ border-color:var(--ink) }
+    .tier-head{ display:flex; align-items:center; justify-content:space-between; gap:var(--sp-3); min-height:24px }
+    .tier-name{ font-weight:600 }
+    .tag{ display:inline-flex; align-items:center; gap:var(--sp-1); padding:var(--sp-1) var(--sp-2); border:var(--hairline) solid var(--line); border-radius:999px; font-size:var(--fs-caption); color:var(--muted) }
+    .tag i{ width:4px; height:4px; border-radius:50%; background:var(--accent) }
+    .price{ margin-top:var(--sp-3); font-size:var(--fs-heading); line-height:1.2; font-weight:600; font-variant-numeric:tabular-nums }
+    .price span{ margin-left:var(--sp-1); font-size:var(--fs-caption); font-weight:400; color:var(--muted) }
+    .tier .caption{ margin-top:var(--sp-1) }
+    .tier ul{ display:grid; gap:var(--sp-2); margin:var(--sp-6) 0 }
+    .tier li{ position:relative; padding-left:var(--sp-4); color:var(--muted) }
+    .tier li::before{ content:""; position:absolute; left:0; top:.7em; width:4px; height:4px; border-radius:50%; background:var(--muted); opacity:.55 }
+    .tier .btn{ margin-top:auto; width:100% }
+    .quote{ padding:var(--sp-20) 0; background:#171613; color:var(--paper) }
+    .quote blockquote{ max-width:24em; font-size:var(--fs-heading); line-height:1.5; font-weight:500; letter-spacing:-.01em }
+    .quote figcaption{ margin-top:var(--sp-6); font-size:var(--fs-caption); color:rgba(244,241,234,.62) }
+    .foot{ padding:var(--sp-12) 0; font-size:var(--fs-caption); color:var(--muted) }
+    .foot .wrap{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:var(--sp-4) }
+    .foot nav{ display:flex; gap:var(--sp-6) }
+    .foot nav a{ display:inline-flex; align-items:center; min-height:44px }
+    @media (max-width:1100px){ .hero .wrap{ grid-template-columns:minmax(0,1fr); gap:var(--sp-12) } .preview{ max-width:540px } .grid3{ grid-template-columns:minmax(0,1fr) } .nav nav{ display:none } }
+    @media (max-width:640px){ :root{ --fs-hero:2rem; --fs-heading:1.5rem } .hero{ padding:var(--sp-8) 0 var(--sp-12) } .section,.quote{ padding:var(--sp-12) 0 } .quote blockquote{ max-width:none } }
+    @media (prefers-reduced-motion:reduce){ *,*::before,*::after{ transition-duration:.01ms !important; animation-duration:.01ms !important } }
+  </style>
+</head>
+<body id="top">
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="#top"><i></i>拾光</a>
+      <nav aria-label="主导航">
+        <a href="#features">功能</a>
+        <a href="#pricing">价格</a>
+        <a href="#quote">评价</a>
+      </nav>
+      <a class="btn ghost" href="#pricing">开始使用</a>
+    </div>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap">
+        <div>
+          <h1 id="hero-title">旅行，该有一本日记</h1>
+          <p class="hero-sub">拾光按拍摄时间和地点整理照片，你每天补一句话，旅行结束时日记已经排好。</p>
+          <div class="actions"><a class="btn" href="#pricing">免费开始</a></div>
+        </div>
+        <div class="preview" aria-hidden="true">
+          <div class="page">
+            <div class="shot"><span class="sun"></span><span class="ridge"></span><span class="ridge front"></span></div>
+            <div class="page-copy">
+              <p class="caption">10 月 4 日，京都</p>
+              <h3>在鸭川边坐到天黑</h3>
+              <p class="caption">风把水面吹成碎光。回住处前买了一杯热豆乳。</p>
+              <div class="strip"><i></i><i></i><i></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="features" aria-labelledby="features-title">
+      <div class="wrap">
+        <h2 id="features-title">整理照片这件事，交给拾光</h2>
+        <div class="grid3">
+          <article class="feature"><h3>自动排版</h3><p>照片按拍摄时间和地点落位，跨天自动分节，不用挑模板。</p></article>
+          <article class="feature"><h3>一句话就够</h3><p>没词的时候补一句当天的心情也算数，日期和地点已经填好。</p></article>
+          <article class="feature"><h3>找回那一天</h3><p>输入「拉面」，就能翻到去年在福冈吃的那一碗。</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="pricing" aria-labelledby="pricing-title">
+      <div class="wrap">
+        <h2 id="pricing-title">按出行频率选</h2>
+        <div class="grid3">
+          <article class="tier">
+            <div class="tier-head"><p class="tier-name">轻装</p></div>
+            <p class="price">¥0</p><p class="caption">一年出门一两次</p>
+            <ul><li>每月 2 本日记</li><li>时间线自动排版</li><li>导出长图</li></ul>
+            <a class="btn ghost" href="#pricing">开始使用</a>
+          </article>
+          <article class="tier best">
+            <div class="tier-head"><p class="tier-name">旅人</p><p class="tag"><i></i>推荐</p></div>
+            <p class="price">¥18<span>每月</span></p><p class="caption">一年出门三五次</p>
+            <ul><li>不限日记本数</li><li>原图无损保存</li><li>地图路线回放</li><li>导出 PDF 与印刷文件</li></ul>
+            <a class="btn" href="#pricing">开始使用</a>
+          </article>
+          <article class="tier">
+            <div class="tier-head"><p class="tier-name">常驻</p></div>
+            <p class="price">¥128<span>每年</span></p><p class="caption">全年都在路上</p>
+            <ul><li>旅人套餐的全部</li><li>每年一本印刷装订</li><li>与同行的人共同编辑</li></ul>
+            <a class="btn ghost" href="#pricing">联系我们</a>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="quote" id="quote" aria-label="用户评价">
+      <div class="wrap"><figure>
+        <blockquote><p>在里斯本的那十天，我每天只写一句。回家翻到第一页，才发现这次旅行我终于记住了细节。</p></blockquote>
+        <figcaption>林简，产品设计师</figcaption>
+      </figure></div>
+    </section>
+  </main>
+  <footer class="foot">
+    <div class="wrap">
+      <p>© 2026 拾光</p>
+      <nav aria-label="页脚导航"><a href="#features">使用条款</a><a href="#pricing">隐私</a><a href="#quote">联系我们</a></nav>
+    </div>
+  </footer>
+</body>
+</html>

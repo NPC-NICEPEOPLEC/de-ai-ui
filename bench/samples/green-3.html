@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="拾光把相册按日期和地点排成旅行手记，用几句话，把一段旅程写成可以翻看的记忆。">
+<title>拾光：把一趟旅行收成可以翻看的记忆</title>
+<style>
+  :root {
+    --paper: #f7f5f1; --surface: #fffefa; --surface-soft: #f2f0eb;
+    --ink: #1b1b1d; --muted: #63615c; --line: rgba(27, 27, 29, 0.14); --accent: #2f5a48; --accent-press: #264a3c; --on-accent: #ffffff;
+    --text-meta: 12px; --text-body: 16px; --text-head: 28px; --text-display: 52px; --r-control: 8px; --r-panel: 16px; --r-frame: 24px; --hairline: 0.5px;
+    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+    --space-6: 32px; --space-7: 40px; --space-8: 48px; --space-9: 64px; --space-10: 96px; --space-11: 112px;
+  }
+  @media (max-resolution: 1.49dppx) { :root { --hairline: 1px; } }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    font-size: var(--text-body); line-height: 1.75; -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  p, h1, h2, h3, ul, blockquote { margin: 0; padding: 0; text-wrap: pretty; }
+  ul { list-style: none; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--space-6); }
+  .site { display: flex; align-items: center; justify-content: space-between; min-height: 80px; }
+  .brand { font-weight: 600; letter-spacing: 0.04em; text-decoration: none; }
+  .nav { display: flex; gap: var(--space-6); }
+  .nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted); text-decoration: none; transition: color 180ms ease-out; }
+  .nav a:hover { color: var(--ink); }
+  .hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--space-9); align-items: center; padding-top: 56px; padding-bottom: var(--space-10); }
+  .hero h1 { max-width: 6.8em; font-size: var(--text-display); line-height: 1.16; letter-spacing: -0.01em; font-weight: 600; }
+  .lede { max-width: 25em; margin-top: var(--space-5); color: var(--muted); }
+  .actions { margin-top: var(--space-7); }
+  .trust { margin-top: var(--space-4); color: var(--muted); font-size: var(--text-meta); }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 52px; padding: 0 var(--space-6); border-radius: var(--r-control);
+    font-weight: 500; text-decoration: none;
+    transition: background-color 180ms ease-out, border-color 180ms ease-out, color 180ms ease-out, transform 100ms ease-out;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--accent); color: var(--on-accent); }
+  .btn-primary:hover { background: var(--accent-press); }
+  .btn-outline { background: var(--surface-soft); border: var(--hairline) solid var(--line); }
+  .btn-outline:hover { background: #eae7e1; }
+  .preview { padding: var(--space-2); background: var(--surface); border: var(--hairline) solid var(--line); border-radius: var(--r-frame); }
+  .preview-page { padding: var(--space-5); background: #fbfaf7; border-radius: var(--r-panel); }
+  .preview-top { display: flex; justify-content: space-between; gap: var(--space-4); color: var(--muted); font-size: var(--text-meta); font-variant-numeric: tabular-nums; }
+  .preview-title { margin: var(--space-3) 0 var(--space-4); font-weight: 600; line-height: 1.5; }
+  .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); }
+  .shot { aspect-ratio: 3 / 4; border-radius: var(--r-control); }
+  .shot-a { background: linear-gradient(180deg, #e5e0d6 0%, #dcd6ca 54%, #c8c1b3 54.4%, #b9b2a3 100%); }
+  .shot-b { background: linear-gradient(180deg, #e8e4db 0%, #ded9cf 42%, #cec8bc 42.4%, #beb7a9 100%); }
+  .shot-c { background: linear-gradient(180deg, #e2ddd3 0%, #d6d0c5 65%, #c3bcad 65.4%, #b5ae9f 100%); }
+  .preview-note { margin-top: var(--space-3); color: var(--muted); font-size: var(--text-meta); line-height: 1.6; }
+  .features, .pricing { padding-bottom: var(--space-11); }
+  .section-head { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-8); align-items: end; margin-bottom: var(--space-7); }
+  .section-head h2 { text-wrap: balance; font-size: var(--text-head); line-height: 1.35; letter-spacing: -0.005em; font-weight: 600; }
+  .section-head p { max-width: 24em; color: var(--muted); }
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
+  .feature { padding: var(--space-5); background: var(--surface); border: var(--hairline) solid var(--line); border-radius: var(--r-panel); }
+  .feature h3 { margin-bottom: var(--space-2); font-weight: 600; }
+  .feature p { color: var(--muted); }
+  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); align-items: stretch; }
+  .tier { display: flex; flex-direction: column; padding: var(--space-6); background: var(--surface); border: var(--hairline) solid var(--line); border-radius: var(--r-panel); }
+  .tier-lead { background: var(--ink); color: var(--paper); border-color: transparent; }
+  .tier-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .tier h3 { font-weight: 600; }
+  .tier-tag { font-size: var(--text-meta); color: rgba(247, 245, 241, 0.62); }
+  .tier-lead .unit, .tier-lead .tier-note { color: rgba(247, 245, 241, 0.62); }
+  .price { display: flex; align-items: baseline; gap: var(--space-2); margin-top: var(--space-3); }
+  .amount { font-size: var(--text-head); font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .unit { font-size: var(--text-meta); color: var(--muted); }
+  .tier-note { margin-top: var(--space-2); color: var(--muted); }
+  .tier ul { display: grid; gap: var(--space-3); margin: var(--space-5) 0 var(--space-6); }
+  .tier li { display: flex; gap: var(--space-2); color: var(--muted); }
+  .tier li::before { content: ""; flex: none; width: 4px; height: 4px; margin-top: 12px; border-radius: 50%; background: currentColor; }
+  .tier-lead li { color: rgba(247, 245, 241, 0.72); }
+  .tier .btn { width: 100%; margin-top: auto; }
+  .tier-lead .btn-primary { border: var(--hairline) solid rgba(255, 255, 255, 0.24); }
+  .tier-lead .btn:focus-visible { outline-color: var(--paper); }
+  .voice { padding: var(--space-10) 0; background: var(--ink); color: var(--paper); }
+  .voice p { max-width: 31em; font-size: var(--text-head); line-height: 1.6; letter-spacing: -0.005em; }
+  .voice cite { display: block; margin-top: var(--space-5); color: rgba(247, 245, 241, 0.62); font-size: var(--text-meta); font-style: normal; }
+  .site-footer { padding: var(--space-9) 0 var(--space-7); }
+  .foot { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-8); }
+  .foot-note { max-width: 22em; margin-top: var(--space-2); color: var(--muted); }
+  .foot-nav { display: flex; flex-wrap: wrap; gap: var(--space-5); }
+  .foot-nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted); text-decoration: none; transition: color 180ms ease-out; }
+  .foot-nav a:hover { color: var(--ink); }
+  .foot-legal { display: flex; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-7); color: var(--muted); font-size: var(--text-meta); }
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: var(--space-8); padding-top: var(--space-7); padding-bottom: var(--space-10); }
+    .preview { max-width: 520px; }
+    .section-head { grid-template-columns: 1fr; gap: var(--space-3); align-items: start; }
+    .feature-grid, .tiers { grid-template-columns: 1fr; }
+    .tier { padding: var(--space-5); }
+    .foot { flex-direction: column; }
+  }
+  @media (max-width: 520px) {
+    .wrap { padding-left: var(--space-5); padding-right: var(--space-5); }
+    .site { min-height: 72px; }
+    .nav { gap: var(--space-4); }
+    .hero { padding-top: var(--space-6); }
+    .hero h1 { font-size: 10vw; }
+    .features, .pricing { padding-bottom: var(--space-10); }
+    .voice { padding: var(--space-8) 0; }
+    .voice p { font-size: 5.5vw; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body id="top">
+  <header class="site wrap">
+    <a class="brand" href="#top">拾光</a><nav class="nav" aria-label="主导航"><a href="#features">功能</a><a href="#pricing">价格</a><a href="#top">登录</a></nav>
+  </header>
+  <main>
+    <section class="hero wrap">
+      <div>
+        <h1>旅途会散场，照片不会。</h1>
+        <p class="lede">拾光把相册按日期和地点重新排好，用几句话，把一段旅程写成可以翻看的记忆。</p>
+        <div class="actions"><a class="btn btn-primary" href="#pricing">开始记录</a></div>
+        <p class="trust">免费开始，不用信用卡。</p>
+      </div>
+      <div class="preview"><div class="preview-page">
+        <div class="preview-top"><time datetime="2026-10-12">10 月 12 日 周六</time><span>京都</span></div>
+        <p class="preview-title">傍晚，沿着鸭川走了七公里</p>
+        <div class="shots" aria-hidden="true"><div class="shot shot-a"></div><div class="shot shot-b"></div><div class="shot shot-c"></div></div>
+        <p class="preview-note">风把芦苇按向一边，河上有船经过。</p>
+      </div></div>
+    </section>
+    <section class="features wrap" id="features" aria-labelledby="features-title">
+      <div class="section-head">
+        <h2 id="features-title">照片拍完，故事才开始</h2><p>从导入相册到写完一句话，都在同一个页面完成。</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature"><h3>按天排好</h3><p>导入后按拍摄时间和地点分组。京都的第一碗面，不会混进东京的雨里。</p></article>
+        <article class="feature"><h3>一行字就够</h3><p>每张照片配一句话。写「风太大，帽子掉进海里」，比九宫格更容易想起那天。</p></article>
+        <article class="feature"><h3>只分享这一段</h3><p>朋友看到的是这段旅程，不是你的整个相册。哪天不想公开，随时合上。</p></article>
+      </div>
+    </section>
+    <section class="pricing wrap" id="pricing" aria-labelledby="pricing-title">
+      <div class="section-head">
+        <h2 id="pricing-title">挑一种方式，把它留下来</h2><p>先免费写完一趟，再决定要不要付费。</p>
+      </div>
+      <div class="tiers">
+        <article class="tier">
+          <h3>免费</h3><p class="price"><span class="amount">¥0</span><span class="unit">永久</span></p>
+          <p class="tier-note">先把最近一次旅行放进来。</p>
+          <ul><li>不限段旅程</li><li>每段 50 张照片</li><li>时间线与文字</li><li>本机保存</li></ul>
+          <a class="btn btn-outline" href="#">免费开始</a>
+        </article>
+        <article class="tier tier-lead">
+          <div class="tier-head"><h3>年费</h3><span class="tier-tag">推荐</span></div>
+          <p class="price"><span class="amount">¥68</span><span class="unit">每年</span></p>
+          <p class="tier-note">约每月 6 元，全部功能。</p>
+          <ul><li>照片数量不限</li><li>原图云端备份</li><li>导出 PDF 与印刷文件</li><li>多人共同记录</li></ul>
+          <a class="btn btn-primary" href="#">选择年费</a>
+        </article>
+        <article class="tier">
+          <h3>永久</h3><p class="price"><span class="amount">¥198</span><span class="unit">一次付清</span></p>
+          <p class="tier-note">买断，不再续费。</p>
+          <ul><li>年费全部功能</li><li>未来版本更新</li><li>含两本印刷小书</li><li>优先解答问题</li></ul>
+          <a class="btn btn-outline" href="#">选择永久</a>
+        </article>
+      </div>
+    </section>
+    <section class="voice" aria-label="用户评价">
+      <div class="wrap"><blockquote>
+        <p>以前旅行回来，照片就存进硬盘，再也没打开过。现在晚饭后写两句，那天在便利店躲雨、绕错路的事，全都回来了。</p>
+        <cite>林岚，建筑师，去年在四国岛待了 11 天</cite>
+      </blockquote></div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap foot">
+      <div><p class="brand">拾光</p><p class="foot-note">把每次出发，收进一本可以翻的册子。</p></div>
+      <nav class="foot-nav" aria-label="页脚导航"><a href="#features">功能</a><a href="#pricing">价格</a><a href="#">帮助</a><a href="#">隐私</a></nav>
+    </div>
+    <div class="wrap foot-legal"><span>© 2026 拾光</span><span>杭州</span></div>
+  </footer>
+</body>
+</html>

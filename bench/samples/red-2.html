@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>拾光 · 把一路的光，收进一本时光</title>
+<style>
+  :root{--paper:#f8f4ec;--ink:#17130f;--muted:#6d6357;--line:rgba(23,19,15,.12);--accent:#b4522c;--accent-soft:#e8c9b6;--card:#fffdf8;
+    --serif:"Songti SC","Noto Serif SC","Source Han Serif SC",Georgia,serif;--sans:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+    background-image:radial-gradient(rgba(23,19,15,.045) 1px,transparent 1px);background-size:22px 22px}
+  a{color:inherit;text-decoration:none} .wrap{width:min(1120px,100% - 48px);margin:0 auto}
+  .eyebrow{font-size:12px;letter-spacing:.24em;color:var(--accent)}
+  .brand{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:20px;letter-spacing:.08em}
+  .brand i{width:26px;height:26px;border-radius:50%;display:block;box-shadow:inset 0 0 0 5px var(--paper);
+    background:conic-gradient(from 210deg,#e8b48a,#b4522c,#5b3a2a,#e8b48a)} .brand span{font-family:var(--sans);font-size:10px;letter-spacing:.3em;color:var(--muted)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 26px;border-radius:999px;
+    background:var(--ink);color:#fdf9f1;font-size:15px;font-weight:600;transition:transform .2s,box-shadow .2s}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(23,19,15,.22)} .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn.ghost:hover{background:rgba(23,19,15,.05);box-shadow:none}
+  .top{display:flex;align-items:center;justify-content:space-between;padding:34px 0} .top nav{display:flex;gap:32px;font-size:14px;color:var(--muted)}
+  .top nav a:hover{color:var(--ink)}
+  .hero{display:grid;grid-template-columns:1.06fr .94fr;gap:64px;align-items:center;padding:52px 0 96px}
+  .hero h1{font-family:var(--serif);font-size:clamp(40px,5.4vw,68px);line-height:1.16;letter-spacing:-.01em;margin:22px 0 24px}
+  .hero h1 em{font-style:normal;color:var(--accent);padding:0 .06em;background:linear-gradient(transparent 66%,rgba(232,201,182,.72) 66% 90%,transparent 90%)}
+  .hero .lead{font-size:17px;color:var(--muted);max-width:30em;margin-bottom:34px}
+  .cta{display:flex;align-items:center;gap:22px;flex-wrap:wrap} .cta small{display:block;font-size:12.5px;color:var(--muted)}
+  .cta .arrow{transition:transform .2s} .cta a:hover .arrow{transform:translateX(4px)}
+  .stats{display:flex;gap:44px;margin-top:52px;padding-top:26px;border-top:1px solid var(--line)}
+  .stats strong{font-family:var(--serif);font-size:26px;font-weight:600;display:block;line-height:1.2} .stats span{font-size:12.5px;color:var(--muted);letter-spacing:.06em}
+  .journal{position:relative;aspect-ratio:1/1.04;max-width:460px;margin-left:auto;width:100%}
+  .sheet{position:absolute;inset:0;border-radius:6px;border:1px solid var(--line);background:var(--card);box-shadow:0 30px 60px -30px rgba(23,19,15,.4)}
+  .sheet.one{transform:rotate(-7deg) translate(-14px,12px);background:linear-gradient(160deg,#d9c4a8,#8a6b4b);border:0;opacity:.9}
+  .sheet.two{transform:rotate(3.5deg) translate(14px,-6px);background:linear-gradient(150deg,#c98f72,#7a3f2b);border:0;opacity:.55}
+  .sheet.three{transform:rotate(-1.5deg);overflow:hidden;display:flex;flex-direction:column;gap:14px;padding:22px}
+  .film{height:56%;border-radius:4px;position:relative;background:radial-gradient(120% 90% at 18% 12%,#f6d9b8,transparent 55%),
+    radial-gradient(90% 80% at 88% 20%,#c66a3e,transparent 60%),linear-gradient(165deg,#6c4a38,#b86a44 46%,#2f2118)}
+  .film::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 46px,rgba(255,248,235,.16) 46px 47px)} .film b{position:absolute;left:16px;bottom:14px;color:#fdf4e7;font-family:var(--serif);font-size:19px;letter-spacing:.1em}
+  .sheet.three p{font-family:var(--serif);font-size:15.5px;line-height:1.75;color:#3c332a;padding:0 4px}
+  .sheet .meta{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.16em;color:var(--muted);
+    margin-top:auto;padding:10px 4px 0;border-top:1px solid var(--line)}
+  .tape{position:absolute;top:-16px;left:50%;translate:-50% 0;width:112px;height:30px;border-radius:2px;background:rgba(224,198,166,.62);transform:rotate(-3deg)}
+  .stamp{position:absolute;right:-18px;top:-26px;width:96px;height:96px;border-radius:50%;display:grid;place-items:center;text-align:center;
+    border:1px dashed rgba(23,19,15,.28);background:rgba(248,244,236,.86);transform:rotate(8deg);font-size:10px;letter-spacing:.14em;color:var(--muted);line-height:1.9}
+  section{padding-block:96px} .features{padding-top:40px}
+  .head{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-bottom:46px;flex-wrap:wrap}
+  .head h2{font-family:var(--serif);font-size:clamp(28px,3.4vw,42px);line-height:1.3;margin-top:12px}
+  .head p{color:var(--muted);font-size:15px;max-width:26em}
+  .cards,.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:32px 28px 36px;
+    transition:transform .25s,box-shadow .25s}
+  .card:hover{transform:translateY(-5px);box-shadow:0 24px 44px -30px rgba(23,19,15,.5)}
+  .icon{width:44px;height:44px;border-radius:12px;margin-bottom:24px;display:grid;place-items:center;background:#f2e7da} .icon span{display:block;background:var(--accent);width:16px;height:16px}
+  .card:nth-child(1) .icon span{border-radius:50%;box-shadow:0 0 0 4px var(--card)} .card:nth-child(2) .icon span{width:22px;height:2px;box-shadow:0 6px 0 var(--accent),0 -6px 0 var(--accent)} .card:nth-child(3) .icon span{border-radius:3px;transform:rotate(45deg)}
+  .card h3{font-family:var(--serif);font-size:22px;margin-bottom:12px} .card p{color:var(--muted);font-size:14.5px} .card .num{float:right;font-family:var(--serif);font-size:13px;color:rgba(23,19,15,.28);letter-spacing:.1em}
+  .pricing{background:rgba(255,253,248,.62);border-block:1px solid var(--line)} .tier{border:1px solid var(--line);border-radius:16px;padding:34px 30px;display:flex;flex-direction:column;background:var(--card)} .tier .tag{font-size:12px;letter-spacing:.18em;color:var(--muted)}
+  .price{font-family:var(--serif);font-size:44px;line-height:1.1;margin:16px 0 4px} .price sup{font-size:17px;top:-14px;position:relative;margin-right:2px} .price small{font-size:13px;color:var(--muted);font-family:var(--sans)}
+  .tier ul{list-style:none;margin:26px 0 30px;display:grid;gap:11px;font-size:14.5px;color:#4a4138}
+  .tier li::before{content:"—";color:var(--accent);margin-right:10px}
+  .tier .btn{margin-top:auto;font-size:14px;padding:13px 20px}
+  .tier.featured{background:var(--ink);color:#f7efe3;border-color:var(--ink);position:relative;transform:translateY(-8px);
+    box-shadow:0 34px 60px -36px rgba(23,19,15,.65)}
+  .tier.featured .tag,.tier.featured .price small,.tier.featured li{color:#cfc4b4} .tier.featured li::before{color:#e6b79c} .tier.featured .btn{background:#f7efe3;color:var(--ink)}
+  .badge{position:absolute;top:-13px;right:24px;background:var(--accent);color:#fff8ef;font-size:11px;
+    letter-spacing:.16em;padding:5px 12px;border-radius:999px}
+  .quote{display:grid;grid-template-columns:auto 1fr;gap:44px;align-items:start;max-width:920px;margin-inline:auto}
+  .avatar{width:76px;height:76px;border-radius:50%;position:relative;box-shadow:0 0 0 1px var(--line);
+    background:radial-gradient(circle at 34% 30%,#f0d3b6,#b4522c 68%,#5b3a2a)}
+  .avatar b{position:absolute;bottom:-8px;right:-10px;background:var(--card);border:1px solid var(--line);border-radius:999px;
+    font-size:10px;letter-spacing:.1em;padding:3px 9px;color:var(--muted);font-weight:500;white-space:nowrap}
+  blockquote{font-family:var(--serif);font-size:clamp(21px,2.5vw,29px);line-height:1.68;margin-bottom:22px} blockquote::before{content:"「";color:var(--accent-soft);margin-right:2px} blockquote::after{content:"」";color:var(--accent-soft)}
+  .who{font-size:13.5px;color:var(--muted);letter-spacing:.04em} .who b{color:var(--ink);font-weight:600}
+  footer{border-top:1px solid var(--line);padding:54px 0 34px}
+  .foot{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:46px} .foot p{color:var(--muted);font-size:14px;margin-top:14px;max-width:22em}
+  .links{display:flex;gap:64px;flex-wrap:wrap} .links div{display:grid;gap:9px;align-content:start;font-size:13.5px;color:var(--muted)}
+  .links b{color:var(--ink);font-size:12px;letter-spacing:.16em;margin-bottom:4px} .links a:hover{color:var(--accent)}
+  .base{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:26px;border-top:1px solid var(--line);
+    font-size:12.5px;color:var(--muted);letter-spacing:.03em}
+  .badge-inline{font-size:11px;letter-spacing:.14em;padding:4px 10px;border:1px solid var(--line);border-radius:999px}
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr;gap:56px;padding-bottom:72px}
+    .journal{margin:0 auto;max-width:400px}
+    .cards,.tiers{grid-template-columns:1fr} .tier.featured{transform:none}
+    .quote{grid-template-columns:1fr;gap:28px} .stats{gap:32px}
+  }
+  @media (max-width:560px){
+    .top nav{display:none} section{padding-block:68px} .features{padding-top:20px}
+    .head{margin-bottom:34px} .links{gap:38px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><div class="brand"><i></i>拾光 <span>SHIGUANG</span></div>
+    <nav><a href="#features">功能</a><a href="#pricing">价格</a><a href="#story">旅人故事</a></nav></header>
+  <section class="hero">
+    <div>
+      <p class="eyebrow">为旅行者做的照片日记</p>
+      <h1>把一路的光，<br />收进一本<em>时光</em>。</h1>
+      <p class="lead">照片散在相册，故事散在记忆里。拾光按时间与足迹，把它们自动整理成一篇可以慢慢翻阅的旅行手记——你只管出发。</p>
+      <div class="cta"><a class="btn" href="#pricing">开始记录这段旅程 <span class="arrow">→</span></a>
+        <small>免费使用 · 无需信用卡<br />已有 24,000 位旅人在写</small></div>
+      <div class="stats"><div><strong>128 万</strong><span>篇旅途手记</span></div>
+        <div><strong>96%</strong><span>旅人仍在续写</span></div>
+        <div><strong>4.9</strong><span>App Store 评分</span></div></div>
+    </div>
+    <div class="journal" aria-hidden="true">
+      <div class="sheet one"></div><div class="sheet two"></div>
+      <div class="sheet three"><div class="film"><b>京都 · 十一月</b></div>
+        <p>清晨六点的岚山，雾还没散。我们谁也没有说话，只听见竹叶上的水珠落下。</p>
+        <div class="meta"><span>DAY 03 / 09</span><span>胶片 · 36 张</span></div></div>
+      <div class="tape"></div><div class="stamp">SHIGUANG<br />EST. 2019<br />· 私藏 ·</div>
+    </div>
+  </section>
+</div>
+
+<section class="features" id="features"><div class="wrap">
+  <div class="head"><div><p class="eyebrow">写得更少，记得更多</p>
+    <h2>旅行已经够满，<br />记录应该更轻。</h2></div>
+    <p>把整理交给拾光，把注意力留给窗外的风景。三件小事，让一段旅程真正留下来。</p></div>
+  <div class="cards">
+    <article class="card"><span class="num">01</span><div class="icon"><span></span></div>
+      <h3>旅途自动成书</h3>
+      <p>照片的时间与位置会自动串成一条旅程时间线，散落的片段变成有起承转合的一篇。</p></article>
+    <article class="card"><span class="num">02</span><div class="icon"><span></span></div>
+      <h3>一句话，也是一篇</h3>
+      <p>写下当天最想记住的一句，拾光替你补上光影、留白与排版，不必等有灵感才动笔。</p></article>
+    <article class="card"><span class="num">03</span><div class="icon"><span></span></div>
+      <h3>胶片般的质感</h3>
+      <p>六种胶片滤镜与三种手账版式，为每段旅程留住恰好的温度，导出即是一本小书。</p></article>
+  </div>
+</div></section>
+
+<section class="pricing" id="pricing"><div class="wrap">
+  <div class="head"><div><p class="eyebrow">简单定价</p>
+    <h2>写下来，不必算计。</h2></div>
+    <p>随时升级或取消，未写完的旅程永远属于你。</p></div>
+  <div class="tiers">
+    <article class="tier"><div class="tag">轻装</div>
+      <div class="price"><sup>¥</sup>0 <small>/ 永久</small></div>
+      <ul><li>每月 3 篇旅途手记</li><li>100 张照片存储</li><li>基础手账版式</li><li>网页端同步</li></ul>
+      <a class="btn ghost" href="#">免费开始</a></article>
+    <article class="tier featured"><span class="badge">最多人选择</span><div class="tag">旅人</div>
+      <div class="price"><sup>¥</sup>18 <small>/ 月</small></div>
+      <ul><li>无限篇数 · 无限照片</li><li>全部胶片滤镜与版式</li><li>高清 PDF 与实拍导出</li><li>离线翻阅 · 多设备同步</li></ul>
+      <a class="btn" href="#">选择旅人</a></article>
+    <article class="tier"><div class="tag">年鉴</div>
+      <div class="price"><sup>¥</sup>38 <small>/ 月</small></div>
+      <ul><li>包含旅人全部功能</li><li>每年一本精装年鉴 · 包邮</li><li>与同行者共同编辑</li><li>优先人工排版顾问</li></ul>
+      <a class="btn ghost" href="#">选择年鉴</a></article>
+  </div>
+</div></section>
+
+<section id="story"><div class="wrap"><div class="quote">
+  <div class="avatar" aria-hidden="true"><b>旅人 · 07</b></div>
+  <div><blockquote>以前旅行回来，几千张照片就躺在相册里再没打开过。现在每段旅程结束，拾光替我留下一本小书——那才是旅行真正留下的东西。</blockquote>
+    <p class="who"><b>林一</b> · 自由摄影师，走过 34 个国家</p></div>
+</div></div></section>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div><div class="brand"><i></i>拾光</div>
+      <p>为旅行者做的照片日记。让每一次出发，都有可以翻阅的回程。</p></div>
+    <div class="links">
+      <div><b>产品</b><a href="#features">功能</a><a href="#pricing">价格</a><a href="#">iOS App</a></div>
+      <div><b>关于</b><a href="#story">旅人故事</a><a href="#">团队</a><a href="#">加入我们</a></div>
+      <div><b>支持</b><a href="#">帮助中心</a><a href="#">隐私政策</a><a href="#">联系我们</a></div>
+    </div>
+  </div>
+  <div class="base"><span>© 2026 拾光 Shiguang · 保留所有权利</span>
+    <span class="badge-inline">用光写作，用时间装订</span></div>
+</div></footer>
+</body>
+</html>

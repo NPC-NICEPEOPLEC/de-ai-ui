@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>拾光：把旅行写成手记</title>
+  <meta name="description" content="拾光把照片、地点和随手写下的句子按天整理，一趟旅行最后变成一本能翻的手记。">
+  <style>
+    :root {
+      --bg: #f5f2eb; --surface: #fcfbf8; --ink: #1b1a17; --ink-2: #5f5a52;
+      --paper: #f5f2eb; --paper-2: #b6afa3; --line: rgba(27, 26, 23, .16);
+      --accent: #a8462b; --hairline: .5px;
+      --text-xs: 12px; --text-sm: 14px; --text-md: 22px; --text-hero: 44px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink); font-size: var(--text-sm); line-height: 1.75; -webkit-font-smoothing: antialiased; line-break: strict;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    }
+    a { color: inherit; text-decoration: none; } :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    h1, h2, h3, p, ul, figure, blockquote { margin: 0; } ul { padding: 0; list-style: none; } ::selection { background: rgba(168, 70, 43, .16); }
+    .shell { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+    .nav { border-bottom: var(--hairline) solid var(--line); }
+    .nav-inner { display: flex; align-items: center; gap: 32px; height: 76px; }
+    .wordmark { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--text-md); font-weight: 600; letter-spacing: -.01em; }
+    .nav-links { display: flex; gap: 24px; margin-left: auto; }
+    .nav-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-2); transition: color 200ms ease-out; }
+    .nav-links a:hover { color: var(--ink); }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 28px; border: var(--hairline) solid transparent; border-radius: 999px; font-size: var(--text-sm); font-weight: 500; line-height: 1; transition: transform 200ms ease-out, background-color 200ms ease-out, border-color 200ms ease-out; }
+    .btn:active { transform: scale(.97); }
+    .btn-solid { background: var(--ink); color: var(--paper); }
+    .btn-solid:hover { background: #000; }
+    .btn-quiet { border-color: var(--line); }
+    .btn-quiet:hover { border-color: rgba(27, 26, 23, .32); }
+    .btn-inverse { background: var(--paper); color: var(--ink); }
+    .btn-sm { min-height: 44px; padding: 0 20px; }
+    .hero { padding: 88px 0 104px; }
+    .hero-grid { display: grid; grid-template-columns: 1.04fr .96fr; align-items: center; gap: 64px; }
+    .hero h1 { max-width: 10em; margin-bottom: 24px; font-size: var(--text-hero); font-weight: 600; line-height: 1.2; letter-spacing: -.015em; text-wrap: balance; }
+    .nowrap { white-space: nowrap; }
+    .hero-sub { max-width: 19em; margin-bottom: 32px; color: var(--ink-2); font-size: var(--text-md); line-height: 1.6; text-wrap: balance; }
+    .hero-actions { display: flex; align-items: center; gap: 12px; }
+
+    .day { max-width: 520px; padding: 24px; background: var(--surface); border: var(--hairline) solid var(--line); border-radius: 16px; }
+    .day-meta { display: flex; align-items: center; justify-content: space-between; color: var(--ink-2); font-size: var(--text-xs); font-variant-numeric: tabular-nums; }
+    .day-title { margin: 16px 0; font-size: var(--text-md); font-weight: 600; line-height: 1.4; letter-spacing: -.01em; }
+    .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+    .shot { height: 96px; border-radius: 4px; }
+    .shot:nth-child(1) { background: radial-gradient(circle at 30% 34%, rgba(255, 250, 240, .8) 0 5%, rgba(255, 250, 240, .2) 8% 22%, transparent 42%), linear-gradient(180deg, #e6e2da 0%, #dcd6ca 38%, #c8c1b3 68%, #b2ab9d 100%); }
+    .shot:nth-child(2) { background: linear-gradient(155deg, rgba(255, 255, 255, .3) 0 10%, transparent 28%), linear-gradient(180deg, #d6dbd3 0%, #c8d0c4 45%, #aeb8a9 100%); }
+    .shot:nth-child(3) { position: relative; background: radial-gradient(80% 32% at 50% 66%, rgba(255, 252, 244, .6), transparent 72%), linear-gradient(180deg, #dadfdb 0%, #ccd1ce 40%, #b5bab7 58%, #a2a8a6 100%); }
+    .stamp { position: absolute; left: 8px; bottom: 8px; padding: 0 8px; border-radius: 999px; background: rgba(252, 251, 248, .8); color: var(--ink); font-size: var(--text-xs); line-height: 20px; font-variant-numeric: tabular-nums; }
+    .day-copy { margin-bottom: 20px; color: var(--ink-2); }
+    .live { display: inline-flex; align-items: center; gap: 8px; }
+    .live::before { content: ""; width: 6px; height: 6px; border-radius: 999px; background: var(--accent); }
+    .section { padding: 0 0 104px; }
+    .intro { max-width: 20em; margin-bottom: 32px; color: var(--ink-2); font-size: var(--text-md); font-weight: 400; line-height: 1.6; text-wrap: balance; }
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .feature { padding: 24px; background: var(--surface); border: var(--hairline) solid var(--line); border-radius: 16px; }
+    .feature h3 { margin-bottom: 8px; font-size: var(--text-md); font-weight: 600; line-height: 1.4; letter-spacing: -.01em; }
+    .feature p { max-width: 34em; color: var(--ink-2); }
+
+    .head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+    .head h2 { font-size: var(--text-md); font-weight: 600; letter-spacing: -.01em; } .head p { color: var(--ink-2); }
+    .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .tier { display: flex; flex-direction: column; padding: 24px; background: var(--surface); border: var(--hairline) solid var(--line); border-radius: 16px; }
+    .tier-dark { color: var(--paper); background: var(--ink); border-color: transparent; }
+    .tier-name { font-size: var(--text-sm); font-weight: 600; line-height: 1.4; }
+    .price { display: flex; align-items: baseline; gap: 4px; margin: 8px 0 24px; font-size: var(--text-md); font-weight: 600; line-height: 1.2; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+    .price span { color: var(--ink-2); font-size: var(--text-xs); font-weight: 400; }
+    .tier-dark .price span, .tier-dark .tier-list { color: var(--paper-2); }
+    .tier-list { flex: 1; color: var(--ink-2); }
+    .tier-list li { padding: 4px 0; }
+    .tier .btn { width: 100%; margin-top: 24px; }
+
+    .voice figure { padding-left: 96px; }
+    .voice blockquote { max-width: 34em; font-size: var(--text-md); line-height: 1.7; text-wrap: balance; }
+    .voice figcaption { display: flex; align-items: center; gap: 12px; margin-top: 20px; }
+    .voice strong { font-weight: 600; } .voice span { color: var(--ink-2); font-size: var(--text-xs); }
+
+    .foot { padding: 32px 0 40px; border-top: var(--hairline) solid var(--line); }
+    .foot-inner { display: flex; align-items: center; flex-wrap: wrap; gap: 16px 32px; }
+    .foot-links { display: flex; gap: 24px; }
+    .foot-links a, .foot-copy { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-2); font-size: var(--text-xs); }
+    .foot-copy { margin-left: auto; }
+    .foot-links a:hover { color: var(--ink); }
+
+    @media (max-width: 900px) {
+      .hero { padding: 56px 0 72px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+      .features, .tiers { grid-template-columns: 1fr; gap: 12px; }
+      .feature, .tier { max-width: 560px; }
+      .voice figure { padding-left: 0; }
+      .section { padding-bottom: 72px; }
+    }
+    @media (max-width: 560px) { .shell { padding: 0 20px; } }
+    @media (max-width: 340px) { .nav-links { display: none; } .nav-inner .btn { margin-left: auto; } }
+    @media (prefers-reduced-motion: reduce) { .btn, .nav-links a, .foot-links a { transition: none; } .btn:active { transform: none; } }
+    @media (max-resolution: 1.49dppx) { :root { --hairline: 1px; } }
+  </style>
+</head>
+<body>
+<header class="nav" id="top">
+  <div class="shell nav-inner">
+    <a class="wordmark" href="#top">拾光</a>
+    <nav class="nav-links" aria-label="主导航"><a href="#features">功能</a><a href="#pricing">定价</a></nav>
+    <a class="btn btn-solid btn-sm" href="#pricing">免费开始</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <h1><span class="nowrap">旅行会结束，</span><span class="nowrap">记忆不会</span></h1>
+        <p class="hero-sub">拾光把照片、地点和随手写下的句子按天<span class="nowrap">整理</span>，一趟旅行最后变成一本能翻的手记。</p>
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="#pricing">免费开始</a>
+          <a class="btn btn-quiet" href="#features">看看功能</a>
+        </div>
+      </div>
+      <div class="day">
+        <div class="day-meta"><span>11 月 3 日</span><span>京都</span></div>
+        <p class="day-title">鸭川的下午</p>
+        <div class="shots"><div class="shot"></div><div class="shot"></div><div class="shot"><span class="stamp">17:42</span></div></div>
+        <p class="day-copy">走到三条大桥的时候开始下雨，躲进便利店买了把透明伞，沿着河<span class="nowrap">一直</span>走到天暗下来。</p>
+        <div class="day-meta"><span>12 张照片</span><span class="live">正在写</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="features" aria-labelledby="features-title">
+    <div class="shell">
+      <h2 class="intro" id="features-title">一天拍几十张，回来只翻一次。拾光想改的是后面这件事。</h2>
+      <div class="features">
+        <article class="feature"><h3>一天一页</h3><p>照片按拍摄时间落到当天，地点自动记在<span class="nowrap">页边</span>，不用先建相册再一张张挑。</p></article>
+        <article class="feature"><h3>写下几行</h3><p>文字停在照片旁边，一段话或一句都行，不用排版，也不要求写完整。</p></article>
+        <article class="feature"><h3>找得回来</h3><p>输入「拉面」，就能翻到 2024 年在福冈拍的<span class="nowrap">那一张</span>，和当天写下的两行。</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pricing" aria-labelledby="pricing-title">
+    <div class="shell">
+      <div class="head"><h2 id="pricing-title">定价</h2><p>按月订阅，随时取消。</p></div>
+      <div class="tiers">
+        <article class="tier">
+          <h3 class="tier-name">轻装</h3>
+          <p class="price">¥0<span>永久</span></p>
+          <ul class="tier-list"><li>每月 3 篇手记</li><li>照片原图保存</li><li>导出一张长图</li></ul>
+          <a class="btn btn-quiet" href="#pricing">开始记录</a>
+        </article>
+        <article class="tier tier-dark">
+          <h3 class="tier-name">长途</h3>
+          <p class="price">¥18<span>/ 月</span></p>
+          <ul class="tier-list"><li>手记数量不限</li><li>自动整理行程地图</li><li>导出 PDF 和打印版</li></ul>
+          <a class="btn btn-inverse" href="#pricing">开始记录</a>
+        </article>
+        <article class="tier">
+          <h3 class="tier-name">同行</h3>
+          <p class="price">¥38<span>/ 月</span></p>
+          <ul class="tier-list"><li>一本手记，5 人共写</li><li>照片合并到同一天</li><li>共同编辑和评论</li></ul>
+          <a class="btn btn-quiet" href="#pricing">开始同行</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section voice" aria-label="用户评价">
+    <div class="shell">
+      <figure>
+        <blockquote>以前回程后照片就躺在相册里。现在每趟回来会认真写两篇，翻到去年在鸟取那篇，还能想起雨落在便利店雨棚上的声音。</blockquote>
+        <figcaption><strong>阿禾</strong><span>自由摄影师</span></figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="shell foot-inner">
+    <span class="wordmark">拾光</span>
+    <nav class="foot-links" aria-label="页脚导航"><a href="#features">功能</a><a href="#pricing">定价</a><a href="#top">回到顶部</a></nav>
+    <span class="foot-copy">© 2026 拾光</span>
+  </div>
+</footer>
+</body>
+</html>

@@ -13,9 +13,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: tests
+
+      - name: linter tests
         run: node --test tests/*.test.mjs
+
       - name: the crafted example must stay clean
         run: node scripts/slop-lint.mjs examples/after.html --fail-under 100
+
       - name: the slop example must stay bad
-        run: node scripts/slop-lint.mjs examples/before.html --fail-under 40 && exit 1 || test $? -eq 1
+        run: |
+          set +e
+          node scripts/slop-lint.mjs examples/before.html --fail-under 40
+          code=$?
+          test "$code" -eq 1
